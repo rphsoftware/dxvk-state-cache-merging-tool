@@ -41,6 +41,8 @@ func main() {
 	hdr := Header{}
 	entries := make(map[string]Entry)
 
+	first := true
+
 	for i := 0; i < len(files); i++ {
 		fmt.Println(files[i], " ")
 		fd, err := os.Open(files[i])
@@ -63,18 +65,19 @@ func main() {
 		fmt.Println("| Entry length: ", neSize)
 
 		cnt := 0
-
-		if hdr.len != neSize {
-			panic("Entry length mismatch!")
-		}
-		if hdr.ver != nVer {
-			panic("Version mismatch!")
+		if first == false {
+			if hdr.len != neSize {
+				panic("Entry length mismatch!")
+			}
+			if hdr.ver != nVer {
+				panic("Version mismatch!")
+			}
 		}
 
 		hdr.magic = magicNum
 		hdr.len = neSize
 		hdr.ver = nVer
-
+		first = false
 		for {
 			entry := make([]byte, neSize)
 			_, err := fd.Read(entry)
