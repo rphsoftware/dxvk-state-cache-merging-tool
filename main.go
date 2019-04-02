@@ -64,6 +64,13 @@ func main() {
 
 		cnt := 0
 
+		if hdr.len != neSize {
+			panic("Entry length mismatch!")
+		}
+		if hdr.ver != nVer {
+			panic("Version mismatch!")
+		}
+
 		hdr.magic = magicNum
 		hdr.len = neSize
 		hdr.ver = nVer
